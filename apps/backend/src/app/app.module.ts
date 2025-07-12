@@ -3,12 +3,10 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule } from '@nestjs/config';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { SensorController } from '../sensor.controller';
-import { SensorService } from '../sensor.service';
-import { Sensor } from '../entities/sensor.entity';
-import { SensorModule } from '../sensor.module';
-
-
+import { Sensor } from './entities/sensor.entity';
+import { Measurement } from './entities/measurement.entity';
+import { SensorModule } from '../sensor/sensor.module';
+import { MeasurementModule } from '../measurement/measurement.module';
 
 @Module({
   imports: [
@@ -20,10 +18,11 @@ import { SensorModule } from '../sensor.module';
       username: process.env.DB_USERNAME,
       password: process.env.DB_PASSWORD,
       database: process.env.DB_NAME,
-      entities: [Sensor],
+      entities: [Sensor, Measurement],
       synchronize: true, // auto-create tables (turn off in prod!)
     }),
     SensorModule,
+    MeasurementModule,
   ],
   controllers: [AppController],
   providers: [AppService],

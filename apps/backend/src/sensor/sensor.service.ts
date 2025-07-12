@@ -3,7 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreateSensorDto } from './dto/create-sensor.dto';
 import { UpdateSensorDto } from './dto/update-sensor.dto';
-import { Sensor } from './entities/sensor.entity';
+import { Sensor } from '../app/entities/sensor.entity';
 @Injectable()
 export class SensorService {
 
@@ -12,20 +12,10 @@ export class SensorService {
     private sensorRepository: Repository<Sensor>,
   ) {}
   
-  //private sensors: CreateSensorDto[] = [];
-
   create(createSensorDto: CreateSensorDto) {
     Logger.log(createSensorDto);
     const sensor = this.sensorRepository.create(createSensorDto);
     return this.sensorRepository.save(sensor);
-    // const newSensor = {
-    //   id: this.sensors.length + 1,
-    //   name: createSensorDto.name,
-    //   type: createSensorDto.type,
-    //   location: createSensorDto.location,
-    // };
-    // this.sensors.push(newSensor);
-    // return newSensor;
   }
 
   findAll() {
@@ -33,14 +23,14 @@ export class SensorService {
   }
 
   findOne(id: number) {
-    return `This action returns a #${id} sensor`;
+    return this.sensorRepository.findOne({ where: { id } });
   }
 
   update(id: number, updateSensorDto: UpdateSensorDto) {
-    return `This action updates a #${id} sensor`;
+    return this.sensorRepository.update(id, updateSensorDto);
   }
 
   remove(id: number) {
-    return `This action removes a #${id} sensor`;
+    return this.sensorRepository.delete(id);
   }
 }
